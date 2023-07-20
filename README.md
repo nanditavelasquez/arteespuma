@@ -7,9 +7,9 @@
 <div>
 
 <div align="left">
+   <h3> para ingresar primero debes de registrarte</h3>
+   <img src="img/plantilla2.jpg" width="476" height="262">
+
    <h3> pagina principal</h3>
    <img src="img/plantilla.jpg" width="476" height="262">
-
-   <h3> para ingresar primero debes de registrarte</h3>
-   <img src="img/plantilla2.jpg" width="738" height="625">
 </div>
