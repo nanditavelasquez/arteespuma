@@ -6,7 +6,7 @@
     <h3> 🔨 Desarrollado con php, mysql, css y javascript</h3>
 <div>
 
-<div align="left">
+<div align="center">
    <h3> para ingresar primero debes de registrarte</h3>
    <img src="img/plantilla2.jpg" width="476" height="262">
 
