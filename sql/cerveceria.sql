@@ -102,7 +102,7 @@ CREATE TABLE `proveedor` (
 
 CREATE TABLE `usuario` (
   `usuario` int(11) NOT NULL,
-  `clave` int(11) NOT NULL
+  `clave` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --

@@ -1,22 +1,43 @@
 <html>
-<?php
-    
-    // Obtengo los datos cargados en el formulario de registro.
+    <?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $usuario = $_POST['usuario'];
     $clave = $_POST['contraseña'];
-    
-    // Crear conexión con la base de datos.
-    include('conectarbd.php');
-    
-    $consulta = "SELECT * FROM usuario WHERE usuario = '$usuario' AND clave = '$clave'";
-    $resultado = mysqli_query($con, $consulta);
-    
-    $filas = mysqli_num_rows($resultado);
-    
-    // Validar la conexión de base de datos.
-    if ($filas) {
-        include("index.php");
+
+    // Validación básica
+    $usuario = htmlspecialchars($usuario);
+
+    if (!preg_match("/^[a-zA-Z0-9]*$/", $usuario)) {
+        echo "Error: El nombre de usuario debe contener solo letras y números.";
         exit;
+    }
+
+    // Conectar a la base de datos
+    include('conectarbd.php');
+
+    if ($con->connect_error) {
+        die("Error de conexión: " . $con->connect_error);
+    }
+
+    // Preparar y ejecutar la consulta para obtener el hash de la contraseña
+    $stmt = $con->prepare("SELECT clave FROM usuario WHERE usuario = ?");
+    if ($stmt === false) {
+        die("Error en la preparación de la consulta: " . $con->error);
+    }
+
+    $stmt->bind_param("s", $usuario);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($hash_clave);
+        $stmt->fetch();
+
+        // Verificar la contraseña ingresada con el hash almacenado
+        if (password_verify($clave, $hash_clave)) {
+            include("index.php");
+            exit;
+        } 
     } else {
         include("login.html");
         ?>
@@ -29,10 +50,10 @@
         </script>
         <?php
     }
-    
-    mysqli_free_result($resultado);
-    mysqli_close($con);
-    ?>
+}
+    // Cerrar la consulta y la conexión
+    $stmt->close();
+    $con->close();
+?>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </html>
-    
